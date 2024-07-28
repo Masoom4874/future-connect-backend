@@ -26,6 +26,14 @@ User.init({
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
+    forgetotpexptime: {
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: true,
+    },
+    forgetotp: {
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: true,
+    },
 }, {
     sequelize: DBCONNECTION_1.default,
     tableName: 'users',

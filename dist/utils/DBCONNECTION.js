@@ -20,6 +20,7 @@ const sequelize = new sequelize_1.Sequelize(process.env.DB_NAME, process.env.DB_
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT, 10),
     dialect: 'postgres',
+    logging: false,
 });
 const testConnection = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signup = exports.login = void 0;
+exports.changepassword = exports.forgetpassword = exports.signup = exports.login = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const JWT_1 = require("../utils/JWT");
 const User_model_1 = __importDefault(require("../users/User.model"));
@@ -49,7 +49,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (user) {
             res.status(400).json({
                 success: false,
-                message: "User Already Exists with this email Phone Number",
+                message: "User Already Exists with this email",
             });
         }
         else {
@@ -82,3 +82,54 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
+const forgetpassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.body;
+        let user = yield userService.findUserByEmail(email);
+        if (user) {
+            yield userService.sendforgetotp(email);
+            res.status(300).json({
+                success: true,
+                message: "Verification Mail has been sent on your email",
+            });
+        }
+        else {
+            res.status(400).json({
+                success: false,
+                message: "Your email is not registered with US",
+            });
+        }
+    }
+    catch (error) {
+        res.status(501).json({
+            success: false,
+            message: error.message,
+        });
+    }
+});
+exports.forgetpassword = forgetpassword;
+const changepassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, otp, password } = req.body;
+        let user = yield userService.verifyAndChangePassword(email, otp, password);
+        if (user) {
+            res.status(300).json({
+                success: true,
+                message: "Password has been changed",
+            });
+        }
+        else {
+            res.status(400).json({
+                success: false,
+                message: "Failed to change password",
+            });
+        }
+    }
+    catch (error) {
+        res.status(501).json({
+            success: false,
+            message: error.message,
+        });
+    }
+});
+exports.changepassword = changepassword;

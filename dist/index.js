@@ -14,10 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const cors_1 = __importDefault(require("cors"));
 const DBCONNECTION_1 = require("./utils/DBCONNECTION");
 const User_model_1 = __importDefault(require("./users/User.model"));
+const morgan_1 = __importDefault(require("morgan"));
 dotenv_1.default.config();
 const mainRoutes = require("./mainRoutes.routes");
 const app = (0, express_1.default)();
@@ -25,8 +25,8 @@ const port = process.env.PORT;
 app.use((0, cors_1.default)({
     origin: "*",
 }));
+app.use((0, morgan_1.default)('combined'));
 app.use(express_1.default.json({ limit: "500mb" }));
-app.use((0, express_fileupload_1.default)());
 const connect = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, DBCONNECTION_1.testConnection)();
     yield User_model_1.default.sync({});
