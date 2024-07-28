@@ -9,5 +9,5 @@ const auth_controllers_1 = require("./auth.controllers");
 exports.AuthRoutes = express_1.default.Router();
 exports.AuthRoutes.post("/login", auth_controllers_1.login);
 exports.AuthRoutes.post("/signup", auth_controllers_1.signup);
-exports.AuthRoutes.post("/foget-password", auth_controllers_1.forgetpassword);
+exports.AuthRoutes.post("/forget-password", auth_controllers_1.forgetpassword);
 exports.AuthRoutes.post("/change-password", auth_controllers_1.changepassword);

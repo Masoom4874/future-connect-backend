@@ -44,7 +44,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password, name } = req.body;
         let user = yield User_model_1.default.findOne({
-            where: { email }
+            where: { email },
         });
         if (user) {
             res.status(400).json({
@@ -57,7 +57,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             user = yield userService.createUser({
                 email,
                 password: encpass,
-                name
+                name,
             });
             if (user) {
                 res.status(201).json({
@@ -88,7 +88,7 @@ const forgetpassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         let user = yield userService.findUserByEmail(email);
         if (user) {
             yield userService.sendforgetotp(email);
-            res.status(300).json({
+            res.status(200).json({
                 success: true,
                 message: "Verification Mail has been sent on your email",
             });
@@ -113,7 +113,7 @@ const changepassword = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const { email, otp, password } = req.body;
         let user = yield userService.verifyAndChangePassword(email, otp, password);
         if (user) {
-            res.status(300).json({
+            res.status(200).json({
                 success: true,
                 message: "Password has been changed",
             });

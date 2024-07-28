@@ -4,7 +4,6 @@ import { createAccessToken } from "../utils/JWT";
 import User from "../users/User.model";
 import UserService from "../users/User.service";
 
-
 const userService = new UserService();
 
 export const login = async (req: any, res: Response) => {
@@ -34,7 +33,7 @@ export const signup = async (req: Request, res: Response) => {
   try {
     const { email, password, name } = req.body;
     let user = await User.findOne({
-      where: { email }
+      where: { email },
     });
 
     if (user) {
@@ -48,8 +47,7 @@ export const signup = async (req: Request, res: Response) => {
       user = await userService.createUser({
         email,
         password: encpass,
-        name
-
+        name,
       });
 
       if (user) {
@@ -73,14 +71,13 @@ export const signup = async (req: Request, res: Response) => {
   }
 };
 
-
 export const forgetpassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-    let user = await userService.findUserByEmail(email)
+    let user = await userService.findUserByEmail(email);
     if (user) {
       await userService.sendforgetotp(email);
-      res.status(300).json({
+      res.status(200).json({
         success: true,
         message: "Verification Mail has been sent on your email",
       });
@@ -89,8 +86,6 @@ export const forgetpassword = async (req: Request, res: Response) => {
         success: false,
         message: "Your email is not registered with US",
       });
-
-
     }
   } catch (error) {
     res.status(501).json({
@@ -100,13 +95,12 @@ export const forgetpassword = async (req: Request, res: Response) => {
   }
 };
 
-
 export const changepassword = async (req: Request, res: Response) => {
   try {
     const { email, otp, password } = req.body;
     let user = await userService.verifyAndChangePassword(email, otp, password);
     if (user) {
-      res.status(300).json({
+      res.status(200).json({
         success: true,
         message: "Password has been changed",
       });
@@ -115,8 +109,6 @@ export const changepassword = async (req: Request, res: Response) => {
         success: false,
         message: "Failed to change password",
       });
-
-
     }
   } catch (error) {
     res.status(501).json({
@@ -125,5 +117,3 @@ export const changepassword = async (req: Request, res: Response) => {
     });
   }
 };
-
-
